@@ -1,10 +1,10 @@
-# Kafka Connect Random Connector
+# Kafka Random Connector
 
 This is a Kafka Connector to send random generated values.
 
 ## Overview
 
-Kafka Connect Random Connector is source connector of Kafka Connect to send random values.
+Kafka Random Connector is source connector of Kafka Connect to send random values.
 This is useful to test of streaming application reading data from Apache Kafka(such as Kafka Streams, Spark Streaming, and so on).
 You can see [here](http://kafka.apache.org/) about Apache Kafka and Kafka Connect.
 
