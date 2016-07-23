@@ -23,7 +23,9 @@ You should add created (and depended) jar file to class path when you run Kafka 
 For example(Using Kafka Connect standalone mode), 
    
     $ CLASSPATH=target/random-connector-1.0-SNAPSHOT.jar:commons-lang.jar \
-    connect-standalone.sh config/connect-standalone.properties
+    {KAFKA_HOME}/bin/connect-standalone.sh {KAFKA_HOME}/config/connect-standalone.properties config/random-connector.properties
+
+{KAFKA_HOME} is Kafka's home directory.
 
 This connector depends on Commons Lang([detail](https://commons.apache.org/proper/commons-lang/)).
 If you use Random String Generator, you should also add class path this library.
