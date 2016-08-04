@@ -37,17 +37,19 @@ public class RandomInt extends Generator {
         this.maxKey = getValueAndParse(props, RandomIntParams.MAX_KEY, RandomIntParams.MAX_KEY_DEFAULT);
         if(minKey > maxKey) {
             throw new ConnectException(RandomIntParams.MAX_KEY + " must be greater than " + RandomIntParams.MIN_KEY);
+        } else {
+            value.put(RandomIntParams.MIN_KEY, Integer.toString(this.minKey));
+            value.put(RandomIntParams.MAX_KEY, Integer.toString(this.maxKey));
         }
         this.minValue = getValueAndParse(props, RandomIntParams.MIN_VALUE, RandomIntParams.MIN_VALUE_DEFAULT);
         this.maxValue = getValueAndParse(props, RandomIntParams.MAX_VALUE, RandomIntParams.MAX_VALUE_DEFAULT);
         if(minValue > maxValue) {
             throw new ConnectException(RandomIntParams.MAX_VALUE + " must be greater than " + RandomIntParams.MIN_VALUE);
+        } else {
+            value.put(RandomIntParams.MIN_VALUE, Integer.toString(this.minValue));
+            value.put(RandomIntParams.MAX_VALUE, Integer.toString(this.maxValue));
         }
 
-        value.put(RandomIntParams.MIN_KEY, Integer.toString(this.minKey));
-        value.put(RandomIntParams.MAX_KEY, Integer.toString(this.maxKey));
-        value.put(RandomIntParams.MIN_VALUE, Integer.toString(this.minValue));
-        value.put(RandomIntParams.MAX_VALUE, Integer.toString(this.maxValue));
         return value;
     }
 
