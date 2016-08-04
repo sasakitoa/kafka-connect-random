@@ -48,8 +48,6 @@ This connector has 2 generators __Random Int Generator__ and __Random String Gen
 In addition to these generator, you can use your original generator. 
 
 You should new class extended Generator and implements a few methods as below.
-
-* setConfigDef
     
 * setTaskConfigs
     
