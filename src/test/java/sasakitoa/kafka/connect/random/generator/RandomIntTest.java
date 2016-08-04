@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import sasakitoa.kafka.connect.random.RandomSourceConnector;
 import sasakitoa.kafka.connect.random.RandomSourceTask;
-import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.params.RandomIntParams;
 
 
@@ -25,9 +25,9 @@ public class RandomIntTest {
 
     @Before
     public void init() {
-        baseProps.put(Params.TOPIC, "test");
-        baseProps.put(Params.NUM_MESSAGES, new Long(-1L).toString());
-        baseProps.put(Params.GENERATOR_CLASS, RandomInt.class.getName());
+        baseProps.put(CommonParams.TOPIC, "test");
+        baseProps.put(CommonParams.NUM_MESSAGES, new Long(-1L).toString());
+        baseProps.put(CommonParams.GENERATOR_CLASS, RandomInt.class.getName());
     }
 
     @Test

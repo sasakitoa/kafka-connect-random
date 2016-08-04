@@ -5,7 +5,7 @@ import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.junit.*;
 import sasakitoa.kafka.connect.random.generator.RandomInt;
-import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.utils.ConstructorNeedArgsClass;
 
 import java.util.*;
@@ -17,9 +17,9 @@ public class RandomSourceTaskTest {
     @Test
     public void testUnlimitedSendMessages() throws InterruptedException {
         Map<String, String> props = new HashMap<>();
-        props.put(Params.TOPIC, "ExpectedTopic");
-        props.put(Params.NUM_MESSAGES, Long.toString(-1L));
-        props.put(Params.GENERATOR_CLASS, RandomInt.class.getName());
+        props.put(CommonParams.TOPIC, "ExpectedTopic");
+        props.put(CommonParams.NUM_MESSAGES, Long.toString(-1L));
+        props.put(CommonParams.GENERATOR_CLASS, RandomInt.class.getName());
 
         RandomSourceTask task = new RandomSourceTask();
         task.start(props);
@@ -38,10 +38,10 @@ public class RandomSourceTaskTest {
     @Test
     public void testLimitedSendMessages() throws InterruptedException {
         Map<String, String> props = new HashMap<>();
-        props.put(Params.TOPIC, "topic");
+        props.put(CommonParams.TOPIC, "topic");
         long numMessagesPerSeconds = 20L;
-        props.put(Params.NUM_MESSAGES, Long.toString(numMessagesPerSeconds));
-        props.put(Params.GENERATOR_CLASS, RandomInt.class.getName());
+        props.put(CommonParams.NUM_MESSAGES, Long.toString(numMessagesPerSeconds));
+        props.put(CommonParams.GENERATOR_CLASS, RandomInt.class.getName());
 
         RandomSourceTask task = new RandomSourceTask();
         task.start(props);
@@ -67,75 +67,75 @@ public class RandomSourceTaskTest {
         RandomSourceTask task = new RandomSourceTask();
         try {
             task.start(props);
-            Assert.fail(Params.TOPIC + " is null, but exception was not thrown.");
+            Assert.fail(CommonParams.TOPIC + " is null, but exception was not thrown.");
         } catch (ConnectException ex) {
-            Assert.assertTrue(ex.getMessage().contains(Params.TOPIC + " must not be null and empty"));
+            Assert.assertTrue(ex.getMessage().contains(CommonParams.TOPIC + " must not be null and empty"));
         }
 
-        props.put(Params.TOPIC, "");
+        props.put(CommonParams.TOPIC, "");
         try {
             task.start(props);
-            Assert.fail(Params.TOPIC + " is empty, but exception was not thrown.");
+            Assert.fail(CommonParams.TOPIC + " is empty, but exception was not thrown.");
         } catch(ConnectException ex) {
-            Assert.assertTrue(ex.getMessage().contains(Params.TOPIC + " must not be null and empty"));
+            Assert.assertTrue(ex.getMessage().contains(CommonParams.TOPIC + " must not be null and empty"));
         }
     }
 
     @Test
     public void testNumMessagesIsNotValid() throws InterruptException {
         Map<String, String> props = new HashMap<>();
-        props.put(Params.TOPIC, "foo");
-        props.put(Params.NUM_MESSAGES, "foo");
+        props.put(CommonParams.TOPIC, "foo");
+        props.put(CommonParams.NUM_MESSAGES, "foo");
         RandomSourceTask task = new RandomSourceTask();
         try {
             task.start(props);
-            Assert.fail(Params.NUM_MESSAGES + " is not long, but exception was not thrown");
+            Assert.fail(CommonParams.NUM_MESSAGES + " is not long, but exception was not thrown");
         } catch(ConnectException ex) {
-            Assert.assertTrue(ex.getMessage().contains(Params.NUM_MESSAGES + " must be long"));
+            Assert.assertTrue(ex.getMessage().contains(CommonParams.NUM_MESSAGES + " must be long"));
         }
     }
 
     @Test
     public void testClassIsNotValid() throws InterruptedException {
         Map<String, String> props = new HashMap<>();
-        props.put(Params.TOPIC, "foo");
+        props.put(CommonParams.TOPIC, "foo");
         RandomSourceTask task = new RandomSourceTask();
 
         try {
             task.start(props);
-            Assert.fail(Params.GENERATOR_CLASS + " is null, but exception was not thrown");
+            Assert.fail(CommonParams.GENERATOR_CLASS + " is null, but exception was not thrown");
         } catch(ConnectException ex) {
-            Assert.assertTrue(ex.getMessage().contains(Params.GENERATOR_CLASS + " must be set"));
+            Assert.assertTrue(ex.getMessage().contains(CommonParams.GENERATOR_CLASS + " must be set"));
         }
 
-        props.put(Params.GENERATOR_CLASS, "");
+        props.put(CommonParams.GENERATOR_CLASS, "");
         try {
             task.start(props);
-            Assert.fail(Params.GENERATOR_CLASS + " is empty, but exception was not thrown");
+            Assert.fail(CommonParams.GENERATOR_CLASS + " is empty, but exception was not thrown");
         } catch(ConnectException ex) {
-            Assert.assertTrue(ex.getMessage().contains(Params.GENERATOR_CLASS + " must be set"));
+            Assert.assertTrue(ex.getMessage().contains(CommonParams.GENERATOR_CLASS + " must be set"));
         }
 
-        props.put(Params.GENERATOR_CLASS, "foo.bar");
+        props.put(CommonParams.GENERATOR_CLASS, "foo.bar");
         try {
             task.start(props);
-            Assert.fail(Params.GENERATOR_CLASS + " is set non-exists class, but exception was not thrown.");
+            Assert.fail(CommonParams.GENERATOR_CLASS + " is set non-exists class, but exception was not thrown.");
         } catch(ConnectException ex) {
             Assert.assertTrue(ex.getMessage().contains("is not found."));
         }
 
-        props.put(Params.GENERATOR_CLASS, ConstructorNeedArgsClass.class.getName());
+        props.put(CommonParams.GENERATOR_CLASS, ConstructorNeedArgsClass.class.getName());
         try {
             task.start(props);
-            Assert.fail(Params.GENERATOR_CLASS + " has only constructor need 1 argument, but exception was not thrown.");
+            Assert.fail(CommonParams.GENERATOR_CLASS + " has only constructor need 1 argument, but exception was not thrown.");
         } catch(ConnectException ex) {
             Assert.assertTrue(ex.getMessage().contains("Failed to create instance of Generator class"));
         }
 
-        props.put(Params.GENERATOR_CLASS, sasakitoa.kafka.connect.random.utils.NoConstructorClass.class.getName());
+        props.put(CommonParams.GENERATOR_CLASS, sasakitoa.kafka.connect.random.utils.NoConstructorClass.class.getName());
         try {
             task.start(props);
-            Assert.fail(Params.GENERATOR_CLASS + " has no constructor, but exception was not thrown.");
+            Assert.fail(CommonParams.GENERATOR_CLASS + " has no constructor, but exception was not thrown.");
         } catch(ConnectException ex) {
             Assert.assertTrue(ex.getMessage().contains("is not accessible"));
         }

@@ -5,7 +5,7 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.junit.*;
 import sasakitoa.kafka.connect.random.RandomSourceConnector;
 import sasakitoa.kafka.connect.random.RandomSourceTask;
-import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.params.RandomStringParams;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +27,9 @@ public class RandomStringTest {
     @Before
     public void init() {
         baseProps = new HashMap<>();
-        baseProps.put(Params.TOPIC, "test");
-        baseProps.put(Params.NUM_MESSAGES, Long.toString(-1L));
-        baseProps.put(Params.GENERATOR_CLASS, RandomString.class.getName());
+        baseProps.put(CommonParams.TOPIC, "test");
+        baseProps.put(CommonParams.NUM_MESSAGES, Long.toString(-1L));
+        baseProps.put(CommonParams.GENERATOR_CLASS, RandomString.class.getName());
     }
 
     @Test

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.generator.Generator;
 
 /**
@@ -19,16 +19,13 @@ public class RandomSourceConnector extends SourceConnector {
 
     Class<? extends Generator> generatorClass;
 
-    private String topic = Params.TOPIC_DEFAULT;
+    private String topic = CommonParams.TOPIC_DEFAULT;
 
-    private long numMessages = Params.NUM_MESSAGES_DEFAULT;
+    private long numMessages = CommonParams.NUM_MESSAGES_DEFAULT;
 
     private Map<String, String> generatorConfigs;
 
-    private final ConfigDef CONFIG_DEF = new ConfigDef()
-            .define(Params.GENERATOR_CLASS, ConfigDef.Type.CLASS, ConfigDef.Importance.HIGH, Params.GENERATOR_CLASS_DESCRIBE)
-            .define(Params.TOPIC, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, Params.TOPIC_DESCRIBE)
-            .define(Params.NUM_MESSAGES, ConfigDef.Type.LONG, ConfigDef.Importance.MEDIUM, Params.NUM_MESSAGES_DESCRIBE);
+    private final ConfigDef CONFIG_DEF = new CommonParams().setConfig(new ConfigDef());
 
     @Override
     public String version() {
@@ -42,23 +39,23 @@ public class RandomSourceConnector extends SourceConnector {
 
     @Override
     public void start(Map<String, String> props) {
-        String topic = props.get(Params.TOPIC);
+        String topic = props.get(CommonParams.TOPIC);
         if(topic != null && !topic.isEmpty()) {
             this.topic = topic;
         }
 
-        String numMessagesStr = props.get(Params.NUM_MESSAGES);
+        String numMessagesStr = props.get(CommonParams.NUM_MESSAGES);
         if(numMessagesStr != null && !numMessagesStr.isEmpty()) {
             try {
                 this.numMessages = Long.parseLong(numMessagesStr);
             } catch(NumberFormatException ex) {
-                throw new ConnectException(Params.NUM_MESSAGES + " must be long, but " + numMessages + " was specified.");
+                throw new ConnectException(CommonParams.NUM_MESSAGES + " must be long, but " + numMessages + " was specified.");
             }
         }
 
-        String generatorStr = props.get(Params.GENERATOR_CLASS);
+        String generatorStr = props.get(CommonParams.GENERATOR_CLASS);
         if(generatorStr == null || generatorStr.isEmpty()) {
-            generatorStr = Params.GENERATOR_CLASS_DEFAULT;
+            generatorStr = CommonParams.GENERATOR_CLASS_DEFAULT;
         }
         try {
             generatorClass = (Class<? extends Generator>)Class.forName(generatorStr);
@@ -86,14 +83,14 @@ public class RandomSourceConnector extends SourceConnector {
         List<Map<String, String>> configs = new ArrayList<>(maxTasks);
         for(int i = 0; i < maxTasks; i++) {
             Map<String, String> config = new HashMap<>();
-            config.put(Params.GENERATOR_CLASS, generatorClass.getName());
-            config.put(Params.TOPIC, topic);
+            config.put(CommonParams.GENERATOR_CLASS, generatorClass.getName());
+            config.put(CommonParams.TOPIC, topic);
 
             if(numMessages >= 0) {
                 long numMessagesParTask = numMessages / (long) maxTasks + (numMessages % maxTasks >= i + 1 ? 1 : 0);
-                config.put(Params.NUM_MESSAGES, Long.toString(numMessagesParTask));
+                config.put(CommonParams.NUM_MESSAGES, Long.toString(numMessagesParTask));
             } else {
-                config.put(Params.NUM_MESSAGES, Integer.toString(-1));
+                config.put(CommonParams.NUM_MESSAGES, Integer.toString(-1));
             }
 
             if(generatorConfigs != null) {

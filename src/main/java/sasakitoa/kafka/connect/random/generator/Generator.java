@@ -3,6 +3,7 @@ package sasakitoa.kafka.connect.random.generator;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.errors.ConnectException;
+import sasakitoa.kafka.connect.random.params.Params;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
 
 import java.util.Map;
@@ -13,10 +14,19 @@ import java.util.Map;
 public abstract class Generator {
 
     /**
+     * Parameter List which is used in Generator
+     */
+    protected Params params;
+
+    /**
      * Add configurations for generator to ConfigDef
      * @param configDef
      */
-    public abstract void setConfigDef(ConfigDef configDef);
+    public void setConfigDef(ConfigDef configDef) {
+        if(params != null) {
+            params.setConfig(configDef);
+        }
+    }
 
     /**
      * Return properties for this generator

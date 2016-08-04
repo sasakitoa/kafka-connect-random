@@ -1,6 +1,5 @@
 package sasakitoa.kafka.connect.random.generator;
 
-import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.errors.ConnectException;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
@@ -30,16 +29,8 @@ public class RandomInt extends Generator {
     private int minKey, maxKey, minValue, maxValue;
 
     @Override
-    public void setConfigDef(ConfigDef configDef) {
-        configDef
-            .define(RandomIntParams.MIN_KEY, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomIntParams.MIN_KEY_DESCRIBE)
-            .define(RandomIntParams.MAX_KEY, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomIntParams.MAX_KEY_DESCRIBE)
-            .define(RandomIntParams.MIN_VALUE, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomIntParams.MIN_VALUE_DESCRIBE)
-            .define(RandomIntParams.MAX_VALUE, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomIntParams.MAX_VALUE_DESCRIBE);
-    }
-
-    @Override
     public Map<String, String> setTaskConfigs(Map<String, String> props) {
+        this.params = new RandomIntParams();
         Map<String, String> value = new HashMap<>();
 
         this.minKey = getValueAndParse(props, RandomIntParams.MIN_KEY, RandomIntParams.MIN_KEY_DEFAULT);

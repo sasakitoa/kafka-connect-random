@@ -31,14 +31,8 @@ public class RandomString extends Generator {
     private int keyLength, valueLength;
 
     @Override
-    public void setConfigDef(ConfigDef configDef) {
-        configDef
-            .define(RandomStringParams.KEY_LENGTH, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomStringParams.KEY_LENGTH_DESCRIBE)
-            .define(RandomStringParams.VALUE_LENGTH, ConfigDef.Type.INT, ConfigDef.Importance.MEDIUM, RandomStringParams.VALUE_LENGTH_DESCRIBE);
-    }
-
-    @Override
     public Map<String, String> setTaskConfigs(Map<String, String> props) {
+        this.params = new RandomStringParams();
         Map<String, String> value = new HashMap<>();
 
         keyLength = getValueAndValidate(props, RandomStringParams.KEY_LENGTH, RandomStringParams.KEY_LENGTH_DEFAULT);

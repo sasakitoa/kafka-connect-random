@@ -5,7 +5,7 @@ import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
-import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.generator.Generator;
 
 import java.util.ArrayList;
@@ -37,25 +37,25 @@ public class RandomSourceTask extends SourceTask {
 
     @Override
     public void start(Map<String, String> props) {
-        topic = props.get(Params.TOPIC);
+        topic = props.get(CommonParams.TOPIC);
         if(topic == null || topic.isEmpty()) {
-            throw new ConnectException(Params.TOPIC + " must not be null and empty, but it was " + topic);
+            throw new ConnectException(CommonParams.TOPIC + " must not be null and empty, but it was " + topic);
         }
 
-        String numMessagesPerSecondSrt = props.get(Params.NUM_MESSAGES);
+        String numMessagesPerSecondSrt = props.get(CommonParams.NUM_MESSAGES);
         if(numMessagesPerSecondSrt != null) {
             try {
                 numMessagesPerSecond = Long.parseLong(numMessagesPerSecondSrt);
             } catch (NumberFormatException ex) {
-                throw new ConnectException(Params.NUM_MESSAGES + " must be long, but it was " + numMessagesPerSecondSrt);
+                throw new ConnectException(CommonParams.NUM_MESSAGES + " must be long, but it was " + numMessagesPerSecondSrt);
             }
         } else {
-            numMessagesPerSecond = Params.NUM_MESSAGES_DEFAULT;
+            numMessagesPerSecond = CommonParams.NUM_MESSAGES_DEFAULT;
         }
 
-        String generatorStr = props.get(Params.GENERATOR_CLASS);
+        String generatorStr = props.get(CommonParams.GENERATOR_CLASS);
         if(generatorStr == null || generatorStr.isEmpty()) {
-            throw new ConnectException(Params.GENERATOR_CLASS + " must be set, but it is null or empty.");
+            throw new ConnectException(CommonParams.GENERATOR_CLASS + " must be set, but it is null or empty.");
         }
         try {
             generator = (Generator)Class.forName(generatorStr).newInstance();
