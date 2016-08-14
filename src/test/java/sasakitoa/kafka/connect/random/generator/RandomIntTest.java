@@ -53,10 +53,10 @@ public class RandomIntTest {
                 int key = (int)record.key();
                 int value = (int)record.value();
 
-                if(key < minKey) Assert.fail("Generate KEY is less than " + RandomIntParams.MIN_KEY);
-                if(key > maxKey) Assert.fail("Generate KEY is larger than " + RandomIntParams.MAX_KEY);
-                if(value < minValue) Assert.fail("Generate VALUE is less than " + RandomIntParams.MIN_VALUE);
-                if(value > maxValue) Assert.fail("Generate VALUE is larger than " + RandomIntParams.MAX_VALUE);
+                if(key < minKey) Assert.fail("Generate KEY is less than " + RandomIntParams.MIN_KEY + "(generated:" + key + " " + RandomIntParams.MIN_KEY + ":" + minKey + ")");
+                if(key > maxKey) Assert.fail("Generate KEY is larger than " + RandomIntParams.MAX_KEY + "(generated:" + key + " " + RandomIntParams.MIN_KEY + ":" + maxKey + ")");
+                if(value < minValue) Assert.fail("Generate VALUE is less than " + RandomIntParams.MIN_VALUE + "(generated:" + value + " " + RandomIntParams.MIN_KEY + ":" + minValue + ")");
+                if(value > maxValue) Assert.fail("Generate VALUE is larger than " + RandomIntParams.MAX_VALUE + "(generated:" + value + " " + RandomIntParams.MIN_KEY + ":" + maxValue + ")");
             }
         }
     }
