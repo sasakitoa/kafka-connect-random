@@ -28,7 +28,7 @@ For example(Using Kafka Connect standalone mode),
 {KAFKA_HOME} is Kafka's home directory.
 
 This connector depends on Commons Lang([detail](https://commons.apache.org/proper/commons-lang/)).
-If you use Random String Generator, you should also add class path this library.
+If you use Random String Generator, you should also add classpath this library.
 
 
 ## Generators
