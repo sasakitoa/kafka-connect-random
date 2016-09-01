@@ -94,7 +94,7 @@ public class RandomInt extends Generator {
     }
 
     private int getRandomValue(int min, int max) {
-        long value = (long)rand.nextInt();
-        return (int)((value - (long)(Integer.MIN_VALUE)) % (max - min) + min);
+        long value = (long) rand.nextInt();
+        return (int) ((value - (long) (Integer.MIN_VALUE)) % (max - min + 1) + min);
     }
 }
