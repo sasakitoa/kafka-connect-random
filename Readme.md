@@ -79,6 +79,7 @@ You can see details of these in Generator class's comments.
 | tasks.max             | Number of tasks                                                | 1     | 
 | messages.per.second   | Number of messages will send in a second<br> -1 is unlimited   | -1    | 
 | topic                 | Topic name will send generated random value                    | topic |
+| task.summary.enable   | Enable display task summary when connector close               | false |
 
 
 ### Random Int Generator
