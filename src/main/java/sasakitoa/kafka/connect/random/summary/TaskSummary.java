@@ -1,27 +1,54 @@
 package sasakitoa.kafka.connect.random.summary;
 
 /**
- * Created by sasaki on 16/09/01.
+ * Base class of TaskSummary.
+ * if want to use original TaskSummary, create new class extends this class.
  */
 public class TaskSummary {
 
-    // Task ID
+    /**
+     * Task ID which handled this TaskSumamry
+      */
     private int taskId;
 
-    // Number of records which send in each tasks.
-    private long records;
+    /**
+     * Number of records which send in this task
+     */
+    private long messages;
 
     public TaskSummary(int taskId) {
         this.taskId = taskId;
-        this.records = 0;
+        this.messages = 0;
     }
 
-    public void addSendRecord(long numRecords) {
-        this.records += numRecords;
+    /**
+     * Get Task ID
+     * @return
+     */
+    public int getTaskId() {
+        return this.taskId;
+    }
+
+
+    /**
+     * Add number of send messages.
+     * NOTICE: This method is called in RandomSourceTask, you need NOT to use this one usually.
+     * @param numMessages
+     */
+    public void addSendMessages(long numMessages) {
+        this.messages += numMessages;
+    }
+
+    /**
+     * Get number of send messages by this task.
+     * @return
+     */
+    public long getSendMessages() {
+        return this.messages;
     }
 
     @Override
     public String toString() {
-        return "Task:" + taskId + " Processed " + records + " messages";
+        return "Task:" + getTaskId() + " Processed " + getSendMessages() + " messages";
     }
 }
