@@ -4,6 +4,7 @@ import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.errors.ConnectException;
 import sasakitoa.kafka.connect.random.params.Params;
+import sasakitoa.kafka.connect.random.summary.TaskSummary;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
 
 import java.util.Map;
@@ -35,6 +36,15 @@ public abstract class Generator {
      * @return
      */
     public abstract Map<String, String> setTaskConfigs(Map<String, String> props);
+
+    /**
+     * Create TaskSummary Object
+     * this method called when task.summary.enable is true only.
+     * @return
+     */
+    public TaskSummary createTaskSummary(int taskId) {
+       return new TaskSummary(taskId);
+    }
 
     /**
      * Return schema type of KEY which this generator will generate

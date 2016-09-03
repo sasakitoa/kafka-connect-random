@@ -19,9 +19,7 @@ import java.util.Map;
  */
 public class RandomSourceTask extends SourceTask {
 
-    private int taskId;
-
-    private TaskSummary taskSummary;
+    protected TaskSummary taskSummary;
 
     private String topic;
 
@@ -42,11 +40,7 @@ public class RandomSourceTask extends SourceTask {
 
     @Override
     public void start(Map<String, String> props) {
-        taskId = Integer.parseInt(props.getOrDefault(CommonParams.TASK_ID, CommonParams.TASK_ID_DEFAULT));
-        boolean taskSummaryEnable = Boolean.parseBoolean(props.getOrDefault(CommonParams.SUMMARY_ENABLE, String.valueOf(CommonParams.SUMMARY_ENABLE_DEFAULT)));
-        if(taskSummary == null && taskSummaryEnable) {
-            taskSummary = new TaskSummary(taskId);
-        }
+
 
         topic = props.get(CommonParams.TOPIC);
         if(topic == null || topic.isEmpty()) {
@@ -80,6 +74,11 @@ public class RandomSourceTask extends SourceTask {
 
         KEY_SCHEMA = generator.getKeySchema();
         VALUE_SCHEMA = generator.getValueSchema();
+        boolean taskSummaryEnable = Boolean.parseBoolean(props.getOrDefault(CommonParams.SUMMARY_ENABLE, String.valueOf(CommonParams.SUMMARY_ENABLE_DEFAULT)));
+        if(taskSummary == null && taskSummaryEnable) {
+            int taskId = Integer.parseInt(props.getOrDefault(CommonParams.TASK_ID, CommonParams.TASK_ID_DEFAULT));
+            taskSummary = generator.createTaskSummary(taskId);
+        }
         generator.start(props);
     }
 
@@ -104,8 +103,8 @@ public class RandomSourceTask extends SourceTask {
         if(numMessages > 0) {
             lastSend = currentTime;
         }
-        if(taskSummary != null) {
-            taskSummary.addSendRecord(numMessages);
+        if(taskSummary != null && send.size() > 0) {
+            taskSummary.addSendMessages(send.size());
         }
 
         return send;

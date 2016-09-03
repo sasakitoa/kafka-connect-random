@@ -2,6 +2,8 @@ package sasakitoa.kafka.connect.random.generator;
 
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.errors.ConnectException;
+import sasakitoa.kafka.connect.random.summary.RandomIntTaskSummary;
+import sasakitoa.kafka.connect.random.summary.TaskSummary;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
 import sasakitoa.kafka.connect.random.params.RandomIntParams;
 import java.util.HashMap;
@@ -27,6 +29,8 @@ public class RandomInt extends Generator {
     private Random rand;
 
     private int minKey, maxKey, minValue, maxValue;
+
+    private RandomIntTaskSummary taskSummary;
 
     @Override
     public Map<String, String> setTaskConfigs(Map<String, String> props) {
@@ -54,6 +58,12 @@ public class RandomInt extends Generator {
     }
 
     @Override
+    public TaskSummary createTaskSummary(int taskId) {
+        this.taskSummary = new RandomIntTaskSummary(taskId);
+        return this.taskSummary;
+    }
+
+    @Override
     public Schema getKeySchema() {
         return Schema.INT32_SCHEMA;
     }
@@ -76,6 +86,9 @@ public class RandomInt extends Generator {
     public KeyValue generate() {
         int key = getRandomValue(minKey, maxKey);
         int value = getRandomValue(minValue, maxValue);
+        if(this.taskSummary != null) {
+            taskSummary.setKeyValue(key, value);
+        }
         return new KeyValue(key, value);
     }
 
