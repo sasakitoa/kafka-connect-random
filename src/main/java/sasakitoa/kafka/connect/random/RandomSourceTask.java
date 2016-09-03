@@ -4,6 +4,7 @@ import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
+import sasakitoa.kafka.connect.random.summary.TaskSummary;
 import sasakitoa.kafka.connect.random.utils.KeyValue;
 import sasakitoa.kafka.connect.random.params.CommonParams;
 import sasakitoa.kafka.connect.random.generator.Generator;
@@ -17,6 +18,10 @@ import java.util.Map;
  * RandomSourceTask sends random value created by generators.
  */
 public class RandomSourceTask extends SourceTask {
+
+    private int taskId;
+
+    private TaskSummary taskSummary;
 
     private String topic;
 
@@ -37,6 +42,12 @@ public class RandomSourceTask extends SourceTask {
 
     @Override
     public void start(Map<String, String> props) {
+        taskId = Integer.parseInt(props.getOrDefault(CommonParams.TASK_ID, CommonParams.TASK_ID_DEFAULT));
+        boolean taskSummaryEnable = Boolean.parseBoolean(props.getOrDefault(CommonParams.SUMMARY_ENABLE, String.valueOf(CommonParams.SUMMARY_ENABLE_DEFAULT)));
+        if(taskSummary == null && taskSummaryEnable) {
+            taskSummary = new TaskSummary(taskId);
+        }
+
         topic = props.get(CommonParams.TOPIC);
         if(topic == null || topic.isEmpty()) {
             throw new ConnectException(CommonParams.TOPIC + " must not be null and empty, but it was " + topic);
@@ -93,11 +104,18 @@ public class RandomSourceTask extends SourceTask {
         if(numMessages > 0) {
             lastSend = currentTime;
         }
+        if(taskSummary != null) {
+            taskSummary.addSendRecord(numMessages);
+        }
+
         return send;
     }
 
     @Override
     public void stop() {
         generator.stop();
+        if(taskSummary != null) {
+            System.out.println(taskSummary.toString());
+        }
     }
 }

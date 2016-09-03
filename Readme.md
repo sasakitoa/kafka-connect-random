@@ -28,7 +28,7 @@ For example(Using Kafka Connect standalone mode),
 {KAFKA_HOME} is Kafka's home directory.
 
 This connector depends on Commons Lang([detail](https://commons.apache.org/proper/commons-lang/)).
-If you use Random String Generator, you should also add class path this library.
+If you use Random String Generator, you should also add classpath this library.
 
 
 ## Generators
@@ -79,6 +79,7 @@ You can see details of these in Generator class's comments.
 | tasks.max             | Number of tasks                                                | 1     | 
 | messages.per.second   | Number of messages will send in a second<br> -1 is unlimited   | -1    | 
 | topic                 | Topic name will send generated random value                    | topic |
+| task.summary.enable   | Enable display task summary when connector close               | false |
 
 
 ### Random Int Generator

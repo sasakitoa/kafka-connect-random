@@ -23,6 +23,8 @@ public class RandomSourceConnector extends SourceConnector {
 
     private long numMessages = CommonParams.NUM_MESSAGES_DEFAULT;
 
+    private boolean taskSummaryEnable = CommonParams.SUMMARY_ENABLE_DEFAULT;
+
     private Map<String, String> generatorConfigs;
 
     private final ConfigDef CONFIG_DEF = new CommonParams().setConfig(new ConfigDef());
@@ -43,6 +45,8 @@ public class RandomSourceConnector extends SourceConnector {
         if(topic != null && !topic.isEmpty()) {
             this.topic = topic;
         }
+
+        this.taskSummaryEnable = Boolean.parseBoolean(props.getOrDefault(CommonParams.SUMMARY_ENABLE, String.valueOf(CommonParams.SUMMARY_ENABLE_DEFAULT)));
 
         String numMessagesStr = props.get(CommonParams.NUM_MESSAGES);
         if(numMessagesStr != null && !numMessagesStr.isEmpty()) {
@@ -83,8 +87,10 @@ public class RandomSourceConnector extends SourceConnector {
         List<Map<String, String>> configs = new ArrayList<>(maxTasks);
         for(int i = 0; i < maxTasks; i++) {
             Map<String, String> config = new HashMap<>();
+            config.put(CommonParams.TASK_ID, Integer.toString(i));
             config.put(CommonParams.GENERATOR_CLASS, generatorClass.getName());
             config.put(CommonParams.TOPIC, topic);
+            config.put(CommonParams.SUMMARY_ENABLE, String.valueOf(taskSummaryEnable));
 
             if(numMessages >= 0) {
                 long numMessagesParTask = numMessages / (long) maxTasks + (numMessages % maxTasks >= i + 1 ? 1 : 0);
