@@ -116,6 +116,6 @@ This information will be printed to stdout.
 Taak Summary is readied for generic and RandomInt, and in addition this, you can implement original one.
 You can see how to implement original task summary as sample in below classes.
 
-* _sasakitoa.kafka.connect.random.generator.RanmdomIntTaskSumary_
+* _sasakitoa.kafka.connect.random.summary.RanmdomIntTaskSumary_
 
 * _sasakitoa.kafka.connect.random.generator.RandomInt_
