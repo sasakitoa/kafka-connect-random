@@ -97,14 +97,14 @@ You can see details of these in Generator class's comments.
 | Name                        | Description                                 | Default value |
 |:----------------------------|:--------------------------------------------|:--------------|
 | random.string.key.length    | Length of strings which generates for Key   | 10            |
-| random.string.key.length    | Length of strings which generates for Value | 10            |
+| random.string.value.length  | Length of strings which generates for Value | 10            |
 
 
 ## Task Summary
 
 This Connector has task summary funtion.
 
-This can show task summary information such below each lanched tasks, if you enable(you can enable set task.summary.enalbe=true in connect configure).
+This can show task summary information such below each launched tasks, if you enable(you can enable set task.summary.enable=true in connect configure).
  
   sample(This sample is RandomInt's and 2 tasks were)
  
@@ -113,9 +113,9 @@ This can show task summary information such below each lanched tasks, if you ena
     
 This information will be printed to stdout.
 
-Taak Summary is readied for generic and RandomInt, and in addition this, you can implement original one.
+Task Summary is readied for generic and RandomInt, and in addition this, you can implement original one.
 You can see how to implement original task summary as sample in below classes.
 
-* _sasakitoa.kafka.connect.random.summary.RanmdomIntTaskSumary_
+* _sasakitoa.kafka.connect.random.summary.RandomIntTaskSummary_
 
 * _sasakitoa.kafka.connect.random.generator.RandomInt_
